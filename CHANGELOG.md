@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `LICENSE` — MIT License.
+- `SECURITY.md` — vulnerability disclosure policy covering both the install
+  shell scripts and the agent/skill definitions (prompt-injection scope).
+- `CONTRIBUTING.md` — contribution workflow and guidance for adding new roles.
+- `.gitignore` — excludes OS files, editor files, and common secret file
+  patterns.
+- `.github/workflows/shellcheck.yml` — CI lint for all shell scripts on every
+  push/PR.
+- `.github/dependabot.yml` — automated updates for GitHub Actions dependencies.
+- License, Security, and Contributing sections in README, plus License and
+  ShellCheck status badges.
+
 ### Removed
 
 - `linkedin-writer` and `blog-writer` agents (`agents/linkedin-writer.md`,

@@ -1,5 +1,8 @@
 # CoreSpec
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![ShellCheck](https://github.com/Htunn/CoreSpec/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/Htunn/CoreSpec/actions/workflows/shellcheck.yml)
+
 **CoreSpec** — *The Core Spec-Driven Development Framework for AI Agents*
 
 A set of shared role definitions implementing a spec-driven development workflow.
@@ -522,6 +525,31 @@ install.sh           # installs agents/ → ~/.claude/agents/
 uninstall.sh         # removes agents from ~/.claude/agents/
 install-copilot.sh   # installs copilot/skills/ → <project>/.github/skills/
 uninstall-copilot.sh # removes skills from <project>/.github/skills/
+
+LICENSE              # MIT License
+SECURITY.md          # vulnerability disclosure policy
+CONTRIBUTING.md      # contribution guidelines
+.github/workflows/   # CI: ShellCheck on every push/PR touching *.sh
 ```
 
 To update a role, edit the source file in `agents/` (Claude Code) or `copilot/skills/<name>/SKILL.md` (Copilot) and re-run the relevant install script.
+
+---
+
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the
+development workflow, how to add a new role, and coding conventions for shell
+scripts and agent/skill files.
+
+## Security
+
+This project takes security seriously for both its shell scripts and its
+agent/skill definitions (which are loaded as instructions by AI coding
+agents). See [SECURITY.md](SECURITY.md) for supported versions, scope, and
+how to privately report a vulnerability. All shell scripts are linted with
+[ShellCheck](https://www.shellcheck.net/) in CI.
+
+## License
+
+CoreSpec is licensed under the [MIT License](LICENSE).
