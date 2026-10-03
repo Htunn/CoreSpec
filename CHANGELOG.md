@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING**: `install-copilot.sh` / `uninstall-copilot.sh` no longer take a
+  project path argument and no longer write to `.github/skills/` in a target
+  repo. Skills are now installed globally at the user-profile level — mirroring
+  how `install.sh` already installs Claude agents to `~/.claude/agents` — to
+  `~/.copilot/skills/`, `~/.claude/skills/`, and `~/.agents/skills/`, so they
+  are available in every project without a per-repo install step. Run
+  `./uninstall-copilot.sh` once with the previous version of the script to
+  clean up any existing `.github/skills/` installs before upgrading.
+
 ### Added
 
 - `LICENSE` — MIT License.

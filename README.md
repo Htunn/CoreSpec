@@ -96,7 +96,11 @@ git pull
 
 ## GitHub Copilot
 
-All roles are available as **GitHub Copilot Agent Skills** — invokable via `/skill-name` slash commands in Copilot Agent Mode. Skills live in `.github/skills/` and are installed into a project by the install script.
+All roles are available as **GitHub Copilot Agent Skills** — invokable via `/skill-name` slash commands in Copilot Agent Mode. Skills are installed **globally** at the user-profile level, so they are available in every project without a per-repo install step. The install script writes each skill to the personal skill locations recognized across agent harnesses:
+
+- `~/.copilot/skills/<name>/SKILL.md`
+- `~/.claude/skills/<name>/SKILL.md`
+- `~/.agents/skills/<name>/SKILL.md`
 
 The `spec-driver` orchestrator (which auto-runs phases in Claude Code) becomes the `/spec-driver` skill — a phase-by-phase workflow guide you follow manually in Copilot Chat.
 
@@ -106,26 +110,26 @@ The `spec-driver` orchestrator (which auto-runs phases in Claude Code) becomes t
 
 ### Install
 
-Run from the cloned repo, passing the path to the target project:
+Run from the cloned repo — no project path needed, this installs once for your user account:
 
 ```bash
-./install-copilot.sh /path/to/your/project
+./install-copilot.sh
 ```
 
-This creates `.github/skills/<name>/SKILL.md` for all 13 roles.
+This creates `<name>/SKILL.md` for all 13 roles under each of the global skill directories listed above.
 
 ### Update
 
 ```bash
 cd CoreSpec
 git pull
-./install-copilot.sh /path/to/your/project
+./install-copilot.sh
 ```
 
 ### Uninstall
 
 ```bash
-./uninstall-copilot.sh /path/to/your/project
+./uninstall-copilot.sh
 ```
 
 ### Usage
