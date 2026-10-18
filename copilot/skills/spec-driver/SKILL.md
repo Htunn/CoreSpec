@@ -21,7 +21,7 @@ Phase 2: Parallel Spec (Software Architect + Platform Architect + DevSecOps Arch
     ↓
 Phase 3: HUMAN REVIEW GATE ← mandatory stop
     ↓
-Phase 4: Implementation (Backend Engineer + Frontend Engineer + Platform Engineer)
+Phase 4: Implementation (Backend Engineer + Frontend Engineer + Data Engineer + Platform Engineer)
     ↓
 Phase 5: QA Validation (QA Engineer validates against spec)
     ↓
@@ -115,7 +115,7 @@ Before any implementation begins, a human must:
 
 ## Phase 4: Implementation
 
-**Who**: Backend Engineer + Frontend Engineer + Platform Engineer  
+**Who**: Backend Engineer + Frontend Engineer + Data Engineer + Platform Engineer  
 **Prerequisite**: `Status: Approved` in the spec
 
 Engineers implement against the spec. They do not make architecture decisions — if the spec is ambiguous, they stop and ask before writing code.
@@ -124,6 +124,7 @@ Engineers implement against the spec. They do not make architecture decisions �
 |------|-------|--------|
 | Backend Engineer | APIs, business logic, database schemas | `/backend-engineer` |
 | Frontend Engineer | UI components, state, API integration | `/frontend-engineer` |
+| Data Engineer | Data pipelines, warehouse models, streaming, data quality | `/data-engineer` |
 | Platform Engineer | Infrastructure, CI/CD, deployment | `/platform-engineer` |
 
 Deviations from spec must be recorded in `## Implementation Notes` in the spec file.

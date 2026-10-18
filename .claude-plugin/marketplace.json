@@ -8,7 +8,7 @@
     {
       "name": "corespec",
       "source": "./",
-      "description": "Spec-driven development roles: product, architecture, platform, security, engineering, QA, and release agents and skills."
+      "description": "Spec-driven development roles: product, architecture, platform, security, engineering (backend, frontend, data), QA, and release agents and skills."
     }
   ]
 }

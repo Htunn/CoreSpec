@@ -55,6 +55,7 @@ This sequence matters because the cost of changing a spec is near zero; the cost
 | `frontend-engineer` | Senior Frontend SE | Implements UI from approved spec |
 | `qa-engineer` | Senior QA Engineer | Test plans, spec validation, deviation reports |
 | `release-engineer` | Senior Release Engineer | Conventional commits, changelog, SemVer, release notes, docs |
+| `data-engineer` | Senior Data Engineer | Data pipelines (batch and streaming), dbt/Spark/Airflow, dimensional modelling, data quality, data contracts, implemented from an approved spec |
 | `platform-engineer` | Senior Platform Engineer | Shell/PowerShell, Docker, Kubernetes, Helm, AWS/Azure/GCP CLI, ArgoCD, Grafana, Prometheus |
 | `pentester` | Senior Penetration Tester | CVSSv3-scored findings, PoC, remediation — web, API, OAuth/OIDC/SAML, JWT, Chrome extensions |
 | `code-reviewer` | Senior Code Reviewer | Security vulnerabilities, refactoring opportunities, and maintainability audit with severity-rated findings |
@@ -124,7 +125,7 @@ Run from the cloned repo — no project path needed, this installs once for your
 ./install-copilot.sh
 ```
 
-This creates `<name>/SKILL.md` for all 13 roles under each of the global skill directories listed above (`~/.claude` honors `CLAUDE_CONFIG_DIR`).
+This creates `<name>/SKILL.md` for all 14 roles under each of the global skill directories listed above (`~/.claude` honors `CLAUDE_CONFIG_DIR`).
 
 To install into a repository instead, run `./install-copilot.sh --project /path/to/repo`; skills are written to `.github/skills/` and `.claude/skills/` for you to commit.
 
@@ -185,6 +186,7 @@ Diagnose why the retrieval recall is below 60%.
 | Backend Engineer | `/backend-engineer` | Yes |
 | Frontend Engineer | `/frontend-engineer` | Yes |
 | QA Engineer | `/qa-engineer` | Yes |
+| Data Engineer | `/data-engineer` | Yes |
 | Platform Engineer | `/platform-engineer` | No |
 | Release Engineer | `/release-engineer` | No |
 | Code Reviewer | `/code-reviewer` | Yes |
@@ -223,7 +225,7 @@ Phase 1  Spec file created              — specs/SPEC-NNN-{slug}.md
 Phase 2  Architects work in parallel    — software + platform + devsecops
 Phase 3  Human review gate             — you approve before any code is written
 Phase 4  Test plan (optional)           — qa-engineer creates test cases from criteria
-Phase 5  Implementation                 — backend + frontend + platform engineers in parallel
+Phase 5  Implementation                 — backend + frontend + data + platform engineers in parallel
 Phase 6  QA validation                  — qa-engineer produces deviation report
 Phase 7  Spec signed off               — Status: Implemented
 Phase 8  Release preparation            — release-engineer: SemVer, changelog, commit message, release notes
@@ -246,6 +248,9 @@ Use devsecops-architect to threat-model specs/SPEC-003-notifications.md
 
 # Implement from an approved spec
 Use backend-engineer to implement specs/SPEC-003-notifications.md
+
+# Implement data pipelines and models from an approved spec
+Use data-engineer to implement specs/SPEC-006-events-pipeline.md
 
 # Validate implementation against spec
 Use qa-engineer to validate the implementation against specs/SPEC-003-notifications.md
@@ -294,6 +299,7 @@ The workflow has nine phases. The first three phases exist to make the last five
 │  Phase 5 ── Implementation in parallel ──────────────────────┐ │
 │               backend-engineer   (API, DB, business logic)   │ │
 │               frontend-engineer  (UI, state, API wiring)     │ │
+│               data-engineer      (pipelines, models, quality)│ │
 │               platform-engineer  (infra, containers, CI/CD)  │ │
 │             └──────────────────────────────────────────────  │ │
 │  Phase 6 ── QA validation against spec (qa-engineer)           │
@@ -315,7 +321,7 @@ The workflow has nine phases. The first three phases exist to make the last five
 | 2 | devsecops-architect | Security Requirements section: STRIDE, auth, data classification, CI/CD gates |
 | 3 | **You** | Review the completed spec and explicitly approve it |
 | 4 | qa-engineer | Test plan mapping every acceptance criterion to test cases |
-| 5 | backend / frontend / platform engineers | Implementation that matches the spec exactly |
+| 5 | backend / frontend / data / platform engineers | Implementation that matches the spec exactly |
 | 6 | qa-engineer | Deviation report — Pass/Fail/Gap per acceptance criterion |
 | 7 | **You** | Sign off: Status → Implemented |
 | 8 | release-engineer | Conventional commit, CHANGELOG entry, SemVer bump, release notes |
@@ -562,6 +568,7 @@ copilot/
     frontend-engineer/SKILL.md
     qa-engineer/SKILL.md
     release-engineer/SKILL.md
+    data-engineer/SKILL.md
     platform-engineer/SKILL.md
     code-reviewer/SKILL.md
     ai-engineer/SKILL.md

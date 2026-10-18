@@ -89,13 +89,16 @@ Spawn `qa-engineer`:
 
 ### Phase 5: Implementation
 
-Based on what the spec requires, spawn engineers (in parallel if both are needed):
+Based on what the spec requires, spawn engineers (in parallel if more than one is needed):
 
 - **Backend work present**: Spawn `backend-engineer`:
   > Implement the backend for the approved spec at `specs/SPEC-NNN-{slug}.md`. Follow the API contracts and data model exactly. Apply security requirements. Write tests for all acceptance criteria. Document any deviations in the spec's Implementation Notes section.
 
 - **Frontend work present**: Spawn `frontend-engineer`:
   > Implement the frontend for the approved spec at `specs/SPEC-NNN-{slug}.md`. Follow API contracts exactly. Handle all error codes defined in the spec. Write component tests for all acceptance criteria. Document deviations in Implementation Notes.
+
+- **Data work present** (pipelines, warehouse/lakehouse models, streaming jobs, data quality checks): Spawn `data-engineer`:
+  > Implement the data pipelines and models for the approved spec at `specs/SPEC-NNN-{slug}.md`. Follow the data model and data contracts exactly. Apply data classification and security requirements. Make pipelines idempotent, add data quality checks and tests for all acceptance criteria. Document deviations in Implementation Notes.
 
 - **Infrastructure work present** (new cloud resources, containers, K8s, CI/CD pipeline changes): Spawn `platform-engineer`:
   > Read the approved spec at `specs/SPEC-NNN-{slug}.md`, focusing on the Infrastructure & Operations section. Implement the required infrastructure: write Dockerfiles, Kubernetes manifests, Helm values, CI pipeline steps, or cloud CLI scripts as needed. Follow the deployment strategy and failure modes defined in the spec.
