@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (batch and streaming), warehouse/lakehouse models, orchestration, data
   quality checks, and data contracts from an approved spec. Wired into the
   `spec-driver` Implementation phase.
+- `ml-engineer` agent and Copilot Agent Skill: implements feature pipelines,
+  reproducible training, evaluation gates, model registry, batch/online
+  serving, and drift monitoring from an approved spec. Complements
+  `ai-engineer` (LLM systems). Wired into the `spec-driver` Implementation
+  phase.
 - **Git Commit Policy** section in every agent and skill: no `Co-authored-by:`
   trailers or "Generated with …" footers for Claude, Copilot, or any AI tool;
   commits authored only by the configured git identity; repository rules

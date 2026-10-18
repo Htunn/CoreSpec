@@ -100,6 +100,9 @@ Based on what the spec requires, spawn engineers (in parallel if more than one i
 - **Data work present** (pipelines, warehouse/lakehouse models, streaming jobs, data quality checks): Spawn `data-engineer`:
   > Implement the data pipelines and models for the approved spec at `specs/SPEC-NNN-{slug}.md`. Follow the data model and data contracts exactly. Apply data classification and security requirements. Make pipelines idempotent, add data quality checks and tests for all acceptance criteria. Document deviations in Implementation Notes.
 
+- **ML work present** (model training, feature pipelines, model serving, drift monitoring; not LLM prompt/RAG/agent work, which goes to `ai-engineer`): Spawn `ml-engineer`:
+  > Implement the ML system for the approved spec at `specs/SPEC-NNN-{slug}.md`. Follow the feature, evaluation, and serving contracts exactly. Establish a baseline, prevent leakage and train/serve skew, make training reproducible, and add evaluation gates and tests for all acceptance criteria. Apply data classification and security requirements. Document deviations in Implementation Notes.
+
 - **Infrastructure work present** (new cloud resources, containers, K8s, CI/CD pipeline changes): Spawn `platform-engineer`:
   > Read the approved spec at `specs/SPEC-NNN-{slug}.md`, focusing on the Infrastructure & Operations section. Implement the required infrastructure: write Dockerfiles, Kubernetes manifests, Helm values, CI pipeline steps, or cloud CLI scripts as needed. Follow the deployment strategy and failure modes defined in the spec.
 

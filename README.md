@@ -56,6 +56,7 @@ This sequence matters because the cost of changing a spec is near zero; the cost
 | `qa-engineer` | Senior QA Engineer | Test plans, spec validation, deviation reports |
 | `release-engineer` | Senior Release Engineer | Conventional commits, changelog, SemVer, release notes, docs |
 | `data-engineer` | Senior Data Engineer | Data pipelines (batch and streaming), dbt/Spark/Airflow, dimensional modelling, data quality, data contracts, implemented from an approved spec |
+| `ml-engineer` | Senior ML Engineer | Feature pipelines, reproducible training, evaluation gates, model registry, batch/online serving, drift monitoring, implemented from an approved spec |
 | `platform-engineer` | Senior Platform Engineer | Shell/PowerShell, Docker, Kubernetes, Helm, AWS/Azure/GCP CLI, ArgoCD, Grafana, Prometheus |
 | `pentester` | Senior Penetration Tester | CVSSv3-scored findings, PoC, remediation — web, API, OAuth/OIDC/SAML, JWT, Chrome extensions |
 | `code-reviewer` | Senior Code Reviewer | Security vulnerabilities, refactoring opportunities, and maintainability audit with severity-rated findings |
@@ -125,7 +126,7 @@ Run from the cloned repo — no project path needed, this installs once for your
 ./install-copilot.sh
 ```
 
-This creates `<name>/SKILL.md` for all 14 roles under each of the global skill directories listed above (`~/.claude` honors `CLAUDE_CONFIG_DIR`).
+This creates `<name>/SKILL.md` for all 15 roles under each of the global skill directories listed above (`~/.claude` honors `CLAUDE_CONFIG_DIR`).
 
 To install into a repository instead, run `./install-copilot.sh --project /path/to/repo`; skills are written to `.github/skills/` and `.claude/skills/` for you to commit.
 
@@ -187,6 +188,7 @@ Diagnose why the retrieval recall is below 60%.
 | Frontend Engineer | `/frontend-engineer` | Yes |
 | QA Engineer | `/qa-engineer` | Yes |
 | Data Engineer | `/data-engineer` | Yes |
+| ML Engineer | `/ml-engineer` | Yes |
 | Platform Engineer | `/platform-engineer` | No |
 | Release Engineer | `/release-engineer` | No |
 | Code Reviewer | `/code-reviewer` | Yes |
@@ -225,7 +227,7 @@ Phase 1  Spec file created              — specs/SPEC-NNN-{slug}.md
 Phase 2  Architects work in parallel    — software + platform + devsecops
 Phase 3  Human review gate             — you approve before any code is written
 Phase 4  Test plan (optional)           — qa-engineer creates test cases from criteria
-Phase 5  Implementation                 — backend + frontend + data + platform engineers in parallel
+Phase 5  Implementation                 — backend + frontend + data + ml + platform engineers in parallel
 Phase 6  QA validation                  — qa-engineer produces deviation report
 Phase 7  Spec signed off               — Status: Implemented
 Phase 8  Release preparation            — release-engineer: SemVer, changelog, commit message, release notes
@@ -251,6 +253,9 @@ Use backend-engineer to implement specs/SPEC-003-notifications.md
 
 # Implement data pipelines and models from an approved spec
 Use data-engineer to implement specs/SPEC-006-events-pipeline.md
+
+# Implement model training, evaluation, and serving from an approved spec
+Use ml-engineer to implement specs/SPEC-007-churn-model.md
 
 # Validate implementation against spec
 Use qa-engineer to validate the implementation against specs/SPEC-003-notifications.md
@@ -300,6 +305,7 @@ The workflow has nine phases. The first three phases exist to make the last five
 │               backend-engineer   (API, DB, business logic)   │ │
 │               frontend-engineer  (UI, state, API wiring)     │ │
 │               data-engineer      (pipelines, models, quality)│ │
+│               ml-engineer        (training, eval, serving)   │ │
 │               platform-engineer  (infra, containers, CI/CD)  │ │
 │             └──────────────────────────────────────────────  │ │
 │  Phase 6 ── QA validation against spec (qa-engineer)           │
@@ -569,6 +575,7 @@ copilot/
     qa-engineer/SKILL.md
     release-engineer/SKILL.md
     data-engineer/SKILL.md
+    ml-engineer/SKILL.md
     platform-engineer/SKILL.md
     code-reviewer/SKILL.md
     ai-engineer/SKILL.md
