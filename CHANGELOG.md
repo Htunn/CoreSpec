@@ -7,19 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- **BREAKING**: `install-copilot.sh` / `uninstall-copilot.sh` no longer take a
-  project path argument and no longer write to `.github/skills/` in a target
-  repo. Skills are now installed globally at the user-profile level — mirroring
-  how `install.sh` already installs Claude agents to `~/.claude/agents` — to
-  `~/.copilot/skills/`, `~/.claude/skills/`, and `~/.agents/skills/`, so they
-  are available in every project without a per-repo install step. Run
-  `./uninstall-copilot.sh` once with the previous version of the script to
-  clean up any existing `.github/skills/` installs before upgrading.
+## [1.0.0] - 2026-10-18
 
 ### Added
 
+- **Git Commit Policy** section in every agent and skill: no `Co-authored-by:`
+  trailers or "Generated with …" footers for Claude, Copilot, or any AI tool;
+  commits authored only by the configured git identity; repository rules
+  (Conventional Commits, DCO, signed commits) respected.
+- `install.sh` disables Claude Code AI commit/PR attribution by default
+  (`attribution` + legacy `includeCoAuthoredBy` in `settings.json`, merged with
+  `jq`); opt out with `--keep-attribution`.
+- `--project <repo>` option for all install/uninstall scripts to install into a
+  repository (`.claude/agents/`, `.github/skills/`, `.claude/skills/`).
+- Installers honor `CLAUDE_CONFIG_DIR`.
+- Claude Code plugin and marketplace manifests (`.claude-plugin/`) so the repo
+  can be installed with `/plugin install corespec@corespec` or allow-listed
+  through managed settings.
+- `enterprise/managed-settings.json` and `enterprise/vscode-settings.json`
+  templates for organization-wide rollout.
+- Skill frontmatter aligned with the Agent Skills specification: `license`,
+  `metadata`, and `argument-hint` on every skill.
+- README sections on commit attribution policy and enterprise deployment.
 - `LICENSE` — MIT License.
 - `SECURITY.md` — vulnerability disclosure policy covering both the install
   shell scripts and the agent/skill definitions (prompt-injection scope).
@@ -31,6 +40,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.github/dependabot.yml` — automated updates for GitHub Actions dependencies.
 - License, Security, and Contributing sections in README, plus License and
   ShellCheck status badges.
+
+### Fixed
+
+- Invalid YAML frontmatter in `agents/pentester.md` and the `backend-engineer`,
+  `frontend-engineer`, and `spec-driver` skills (unquoted `: ` in
+  `description`), which caused clients to skip or mis-read those files.
+
+### Changed
+
+- All agents use `model: inherit` instead of `model: sonnet`, so they follow
+  the session model and the organization's `availableModels` / provider policy.
+- `release-engineer` skill no longer suggests a `Co-Authored-By:` footer.
+- **BREAKING**: `install-copilot.sh` / `uninstall-copilot.sh` no longer take a
+  project path argument and no longer write to `.github/skills/` in a target
+  repo. Skills are now installed globally at the user-profile level — mirroring
+  how `install.sh` already installs Claude agents to `~/.claude/agents` — to
+  `~/.copilot/skills/`, `~/.claude/skills/`, and `~/.agents/skills/`, so they
+  are available in every project without a per-repo install step. Run
+  `./uninstall-copilot.sh` once with the previous version of the script to
+  clean up any existing `.github/skills/` installs before upgrading.
+  Repository installs are available through the explicit `--project <repo>`
+  flag.
 
 ### Removed
 
@@ -99,6 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Senior Pentester agent covering OWASP Top 10, threat modelling, CVE triage, and
   structured penetration test reports.
 
-[Unreleased]: https://github.com/htunn/spec-driven-development/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Htunn/CoreSpec/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Htunn/CoreSpec/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/htunn/spec-driven-development/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/htunn/spec-driven-development/releases/tag/v0.1.0

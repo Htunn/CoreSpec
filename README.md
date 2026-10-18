@@ -78,6 +78,14 @@ chmod +x install.sh
 
 Restart Claude Code. The agents are now available in every project.
 
+The installer also disables Claude Code's AI commit/PR attribution by merging this into `${CLAUDE_CONFIG_DIR:-~/.claude}/settings.json` (requires `jq` when the file already exists):
+
+```json
+{ "attribution": { "commit": "", "pr": "", "sessionUrl": false }, "includeCoAuthoredBy": false }
+```
+
+Pass `--keep-attribution` to skip this. To install into a repository instead of your user profile (so the whole team gets the agents when they clone it), run `./install.sh --project /path/to/repo` and commit `.claude/agents/` and `.claude/settings.json`.
+
 ### Update
 
 ```bash
@@ -116,7 +124,9 @@ Run from the cloned repo — no project path needed, this installs once for your
 ./install-copilot.sh
 ```
 
-This creates `<name>/SKILL.md` for all 13 roles under each of the global skill directories listed above.
+This creates `<name>/SKILL.md` for all 13 roles under each of the global skill directories listed above (`~/.claude` honors `CLAUDE_CONFIG_DIR`).
+
+To install into a repository instead, run `./install-copilot.sh --project /path/to/repo`; skills are written to `.github/skills/` and `.claude/skills/` for you to commit.
 
 ### Update
 
@@ -183,6 +193,8 @@ Diagnose why the retrieval recall is below 60%.
 
 Skills marked `context: fork` run in an isolated subagent — their output stays out of your main chat context, which keeps the session clean for heavy analysis or multi-file generation tasks.
 
+Skill frontmatter follows the [Agent Skills specification](https://agentskills.io/specification) (`name`, `description`, `license`, `metadata`) plus two client extensions: `argument-hint` (VS Code and Claude Code) and `context: fork` (Claude Code). Strip the two extensions if you upload a skill to claude.ai or the Skills API, which accept only spec fields.
+
 ### Limitations vs Claude Code
 
 | Capability | Claude Code | GitHub Copilot |
@@ -190,7 +202,7 @@ Skills marked `context: fork` run in an isolated subagent — their output stays
 | Parallel architect spawning | Automatic | Three manual `/skill` calls in separate tabs |
 | Phase auto-progression | Automatic | Manual — one `/skill` call per phase |
 | Enforced Phase 3 review gate | Orchestrator halts | Developer-enforced (stop before `/backend-engineer`) |
-| Per-role model selection | `model:` frontmatter | Global VS Code setting only |
+| Per-role model selection | `model: inherit` (follows the session / org-allowed model) | Global VS Code setting only |
 | Isolated subagent execution | `Agent` tool | `context: fork` in skills |
 
 ## Workflow (Claude Code)
@@ -505,12 +517,43 @@ The title should describe the decision, not the topic. Someone scanning a list o
 
 ---
 
+## Commit attribution policy
+
+Every agent and skill ends with a **Git Commit Policy** section: no `Co-authored-by:` trailers for Claude, Copilot, or any other AI tool, no "Generated with …" footers or session links, commits authored only by the configured git identity, and the repository's own rules (Conventional Commits, DCO sign-off, signed commits) respected. AI attribution is added only when the user or the repository's written policy explicitly asks for it.
+
+The tools' own settings are disabled too, so attribution doesn't come back through the client:
+
+| Client | Setting | How it is applied |
+|---|---|---|
+| Claude Code | `attribution.commit = ""`, `attribution.pr = ""`, `attribution.sessionUrl = false` (+ legacy `includeCoAuthoredBy = false`) | `install.sh` (user or project `settings.json`), or [enterprise/managed-settings.json](enterprise/managed-settings.json) |
+| VS Code + Copilot | `"git.addAICoAuthor": "off"` (the default) | User/workspace settings — see [enterprise/vscode-settings.json](enterprise/vscode-settings.json) |
+
+## Enterprise deployment
+
+CoreSpec is plain Markdown and JSON with no network calls or executables in the agents/skills, so it can be reviewed, mirrored to an internal Git server, and pinned like any other dependency. Choose the channel that matches how your organization manages AI tooling:
+
+| Channel | Scope | How |
+|---|---|---|
+| **Repository** | Everyone who clones a repo | `./install.sh --project <repo>` and `./install-copilot.sh --project <repo>`, then commit `.claude/` and `.github/skills/` |
+| **Claude Code plugin marketplace** | Org-wide, versioned via Git | This repo is a plugin marketplace ([.claude-plugin/](.claude-plugin/)). Users run `/plugin marketplace add Htunn/CoreSpec` (or your internal mirror) and `/plugin install corespec@corespec`. Agents and skills are namespaced as `corespec:<role>` |
+| **Claude Code managed settings** | Every managed machine | Deploy [enterprise/managed-settings.json](enterprise/managed-settings.json) via MDM, `managed-settings.json`, or server-managed settings. It enforces no-attribution and registers/enables the plugin. Add `strictKnownMarketplaces` to restrict users to approved marketplaces, and point `repo` at your internal mirror |
+| **Claude Code managed agents/skills** | Every managed machine | Copy `agents/*.md` to `.claude/agents/` and `copilot/skills/*` to `.claude/skills/` inside the [managed settings directory](https://code.claude.com/docs/en/managed-settings) |
+| **GitHub Copilot / VS Code** | Per repo or per user | Repository channel above, or `./install-copilot.sh` on each machine; enforce `git.addAICoAuthor: off` through your settings management |
+
+Notes for regulated environments:
+
+- Agents use `model: inherit`, so they run on whatever model the session uses and stay inside your organization's `availableModels` allowlist and provider (Anthropic API, Amazon Bedrock, Google Cloud, Microsoft Foundry, or an LLM gateway).
+- Install one channel per machine — the plugin and the `install.sh` copies define the same roles, and running both shows each role twice.
+- Installers honor `CLAUDE_CONFIG_DIR` and never use `sudo`.
+
+---
+
 ## Files
 
 ```
 agents/          # Claude Code agent definitions (YAML frontmatter + body)
 copilot/
-  skills/        # GitHub Copilot Agent Skills (SKILL.md per role directory)
+  skills/        # Agent Skills (SKILL.md per role directory) for Copilot, Claude Code, and other agents
     software-architect/SKILL.md
     platform-architect/SKILL.md
     devsecops-architect/SKILL.md
@@ -525,10 +568,13 @@ copilot/
     pentester/SKILL.md
     spec-driver/SKILL.md
 
-install.sh           # installs agents/ → ~/.claude/agents/
-uninstall.sh         # removes agents from ~/.claude/agents/
-install-copilot.sh   # installs copilot/skills/ → <project>/.github/skills/
-uninstall-copilot.sh # removes skills from <project>/.github/skills/
+install.sh           # installs agents/ → ~/.claude/agents/ (or --project <repo>) and disables AI attribution
+uninstall.sh         # removes agents from ~/.claude/agents/ (or --project <repo>)
+install-copilot.sh   # installs copilot/skills/ → ~/.copilot, ~/.claude, ~/.agents skills dirs (or --project <repo>)
+uninstall-copilot.sh # removes the installed skills (or --project <repo>)
+
+.claude-plugin/      # Claude Code plugin + marketplace manifests (agents/ and copilot/skills/)
+enterprise/          # managed-settings.json and VS Code settings templates for org rollout
 
 LICENSE              # MIT License
 SECURITY.md          # vulnerability disclosure policy

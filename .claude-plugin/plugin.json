@@ -1,0 +1,14 @@
+{
+  "name": "corespec",
+  "displayName": "CoreSpec",
+  "description": "Spec-driven development roles: product, architecture, platform, security, engineering, QA, and release agents and skills.",
+  "author": {
+    "name": "Htunn",
+    "url": "https://github.com/Htunn"
+  },
+  "homepage": "https://github.com/Htunn/CoreSpec",
+  "repository": "https://github.com/Htunn/CoreSpec",
+  "license": "MIT",
+  "keywords": ["spec-driven-development", "architecture", "security", "qa", "release"],
+  "skills": "./copilot/skills/"
+}

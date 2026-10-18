@@ -1,0 +1,14 @@
+{
+  "name": "corespec",
+  "owner": {
+    "name": "Htunn",
+    "url": "https://github.com/Htunn"
+  },
+  "plugins": [
+    {
+      "name": "corespec",
+      "source": "./",
+      "description": "Spec-driven development roles: product, architecture, platform, security, engineering, QA, and release agents and skills."
+    }
+  ]
+}

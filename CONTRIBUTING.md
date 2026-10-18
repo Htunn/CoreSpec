@@ -31,8 +31,8 @@ and lets maintainers weigh in on direction before you invest time.
    script against a scratch directory and confirm the file lands where
    expected:
    ```bash
-   ./install.sh                       # Claude Code agents → ~/.claude/agents/
-   ./install-copilot.sh /tmp/scratch  # Copilot skills → /tmp/scratch/.github/skills/
+   ./install.sh --project /tmp/scratch          # agents → /tmp/scratch/.claude/agents/
+   ./install-copilot.sh --project /tmp/scratch  # skills → /tmp/scratch/.github/skills/, .claude/skills/
    ```
 5. Update [CHANGELOG.md](CHANGELOG.md) under `[Unreleased]` describing your
    change (Added / Changed / Removed).
@@ -51,6 +51,17 @@ dynamically by globbing their source directories — you do not need to edit
 the scripts themselves to register a new role. You do need to add the new
 role to the roles table and relevant workflow sections in
 [README.md](README.md).
+
+Every new role must also:
+
+- Use valid YAML frontmatter. Quote any `description` that contains `: `,
+  otherwise the file fails to parse and the client silently skips it.
+- Agents: set `model: inherit` and list only the `tools` the role needs.
+- Skills: keep `name` equal to the directory name (lowercase, hyphens,
+  max 64 chars), keep `description` under 1024 characters, and include
+  `license` and `metadata` as in the existing skills.
+- End with the shared `## Git Commit Policy` section (no AI co-author
+  trailers or attribution), copied verbatim from an existing role.
 
 ## Security
 
