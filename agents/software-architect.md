@@ -25,27 +25,47 @@ Create `specs/SPEC-NNN-{kebab-slug}.md` in the project root. Determine the next 
 # SPEC-NNN: {Feature Name}
 
 ## Metadata
-- **Status**: Draft | Review | Approved | Implemented
-- **Authors**: Software Architect, Platform Architect, DevSecOps Architect
+- **Status**: Draft | Review | Approved | Implemented | Superseded | Deprecated
+- **Authors**: Product Manager, Software Architect, Platform Architect, DevSecOps Architect
 - **Date**: YYYY-MM-DD
 - **Priority**: P0 | P1 | P2
+- **Priority justification**: [one sentence on why this priority]
+- **Superseded by**: [SPEC-NNN — only when Status is Superseded]
 
 ## Problem Statement
-[What is broken, missing, or needed — without proposing a solution]
+[Who is affected, what is their pain, what is the business or user cost of not solving it. No solution language.]
 
 ## Goals
-- [ ] Concrete, measurable outcome
+- G-1: [Measurable outcome — not a feature]
 
 ## Non-Goals
-- Explicit scope boundaries to prevent scope creep
+- NG-1: [Explicit exclusion — why excluded]
+- NG-2: [Explicit exclusion — why excluded]
+
+## User Personas
+### [Persona Name / Role]
+- **Goal**: what they are trying to accomplish
+- **Pain**: what currently blocks or frustrates them
+- **Frequency**: how often they encounter this
 
 ## User Stories
-- As a [actor], I want [action] so that [outcome]
+- US-1: As a [persona], I want [action] so that [outcome].
 
 ## Acceptance Criteria
-- [ ] Criterion verifiable by QA (Given/When/Then format preferred)
+- AC-1 (US-1): Given [state] / When [action] / Then [observable outcome]
+
+## Success Metrics
+| Metric | Baseline | Target | Measurement method |
+|--------|----------|--------|-------------------|
+| | | | |
+
+## Open Questions
+[Must be empty before Status changes to Approved. Give each an owner and a due date.
+Mark unresolved ambiguity inline as `[NEEDS CLARIFICATION: question]` — never guess.]
+- OQ-1: [question] — owner: [name], due: [date]
 
 ## Technical Design
+[To be completed by Software Architect]
 
 ### Architecture
 [ASCII or Mermaid component diagram]
@@ -54,7 +74,7 @@ Create `specs/SPEC-NNN-{kebab-slug}.md` in the project root. Determine the next 
 [Schema definitions with field names and types]
 
 ### API Contracts
-[Endpoint / event definitions with request/response shapes and error codes]
+[Endpoint / event definitions with request/response shapes and every error code]
 
 ### Sequence Diagram
 [Key flows — use Mermaid `sequenceDiagram`]
@@ -62,12 +82,32 @@ Create `specs/SPEC-NNN-{kebab-slug}.md` in the project root. Determine the next 
 ### Dependencies
 [External services, libraries, internal systems — with their SLAs if known]
 
-## Implementation Notes
-[Filled in by engineers if they deviate from spec — leave empty initially]
+## Infrastructure & Operations
+[To be completed by Platform Architect]
 
-## Open Questions
-[Must be empty before status changes to Approved]
+## Security Requirements
+[To be completed by DevSecOps Architect]
+
+## Implementation Notes
+[Filled in by engineers when they deviate from the spec — leave empty initially]
+
+## Change Log
+[Any edit after Status: Approved is recorded here and needs re-approval.]
+
+| Date | Change | Reason | Approved by |
+|------|--------|--------|-------------|
+| | | | |
 ```
+
+The canonical copy of this template is `templates/SPEC-template.md` in the CoreSpec repository; keep the two identical.
+
+### Traceability
+- Give every goal, non-goal, story, criterion, and open question a stable ID (`G-`, `NG-`, `US-`, `AC-`, `OQ-`). Never renumber after approval; retire an ID instead.
+- Every acceptance criterion cites the user story it verifies. Engineer tasks, QA test cases, and deviations cite AC IDs.
+- Mark every ambiguity inline as `[NEEDS CLARIFICATION: …]` rather than choosing a plausible answer. A spec with any marker left is not ready for approval.
+
+### Changing an approved spec
+Editing a spec after `Status: Approved` sends it back to `Review`: record the edit in the Change Log, get the same human approval again, then restore `Approved`. Use `Superseded` (with `Superseded by`) when a newer spec replaces it and `Deprecated` when the feature is retired.
 
 ## ADR Template
 
@@ -94,6 +134,9 @@ Create `docs/adr/ADR-NNN-{slug}.md`:
 ## Review Checklist (before marking Approved)
 - [ ] All acceptance criteria are testable (Given/When/Then)
 - [ ] No open questions remain
+- [ ] No `[NEEDS CLARIFICATION]` markers remain
+- [ ] Every goal, story, and criterion has an ID and every criterion cites its story
+- [ ] Design does not conflict with `specs/CONSTITUTION.md` (if the project has one) or records the exception
 - [ ] API contracts cover all error cases
 - [ ] Data model covers all use cases
 - [ ] Platform architect has added Infrastructure & Operations section

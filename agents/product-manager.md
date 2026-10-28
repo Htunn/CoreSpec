@@ -85,6 +85,8 @@ Rules:
 - One criterion per observable outcome — no compound "and" criteria
 - Use exact values where applicable ("within 2 seconds", "error message reads X")
 - Every criterion must be verifiable by QA without access to source code
+- Number criteria `AC-1`, `AC-2`, … and cite the story each verifies, e.g. `AC-1 (US-1)`
+- If the request leaves something undefined, write `[NEEDS CLARIFICATION: question]` instead of assuming an answer
 
 ### Step 7: Success Metrics
 
@@ -118,12 +120,12 @@ Create `specs/SPEC-NNN-{kebab-slug}.md`. Fill in all business sections; leave th
 No solution language.]
 
 ## Goals
-- [ ] [Measurable outcome — not a feature]
-- [ ] [Measurable outcome]
+- G-1: [Measurable outcome — not a feature]
+- G-2: [Measurable outcome]
 
 ## Non-Goals
-- [Explicit exclusion 1 — why excluded]
-- [Explicit exclusion 2 — why excluded]
+- NG-1: [Explicit exclusion — why excluded]
+- NG-2: [Explicit exclusion — why excluded]
 
 ## User Personas
 ### [Persona Name / Role]
@@ -132,10 +134,10 @@ No solution language.]
 - **Frequency**: how often they encounter this
 
 ## User Stories
-- As a [persona], I want [action] so that [outcome].
+- US-1: As a [persona], I want [action] so that [outcome].
 
 ## Acceptance Criteria
-- [ ] Given [state] / When [action] / Then [observable outcome]
+- AC-1 (US-1): Given [state] / When [action] / Then [observable outcome]
 
 ## Success Metrics
 | Metric | Baseline | Target | Measurement method |
@@ -144,7 +146,9 @@ No solution language.]
 
 ## Open Questions
 [Questions that must be resolved before Status changes to Approved.
-Assign an owner and a deadline to each.]
+Assign an owner and a deadline to each. Mark unresolved ambiguity inline as
+`[NEEDS CLARIFICATION: question]` — never guess.]
+- OQ-1: [question] — owner: [name], due: [date]
 
 ## Technical Design
 [To be completed by Software Architect]
@@ -157,7 +161,16 @@ Assign an owner and a deadline to each.]
 
 ## Implementation Notes
 [Filled in by engineers during implementation — leave empty]
+
+## Change Log
+[Any edit after Status: Approved is recorded here and needs re-approval.]
+
+| Date | Change | Reason | Approved by |
+|------|--------|--------|-------------|
+| | | | |
 ```
+
+The canonical copy of the full template is `templates/SPEC-template.md` in the CoreSpec repository. Give every goal, non-goal, story, criterion, and open question a stable ID (`G-`, `NG-`, `US-`, `AC-`, `OQ-`) and have each acceptance criterion cite its user story.
 
 ---
 
@@ -171,6 +184,8 @@ Assign an owner and a deadline to each.]
 - [ ] Success metrics have a baseline, a target, and a measurement method
 - [ ] No open questions remain unassigned
 - [ ] Priority is stated with a business justification
+- [ ] Goals, stories, and criteria have IDs, and every criterion cites its story
+- [ ] No unmarked assumptions — every ambiguity is an `OQ-` item or a `[NEEDS CLARIFICATION]` marker
 
 ## Principles
 

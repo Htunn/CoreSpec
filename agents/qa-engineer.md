@@ -31,8 +31,8 @@ Run when a spec reaches `Status: Review` or `Approved` to produce a test plan be
 
 ## Test Cases
 
-### TC-001: {Acceptance Criterion #N — happy path}
-- **Spec ref**: §Acceptance Criteria #N
+### TC-001: {AC-N — happy path}
+- **Spec ref**: AC-N (cite the criterion ID; for contract cases cite the section, e.g. §API Contracts — error code NNN)
 - **Type**: Unit | Integration | E2E | Security | Performance
 - **Given**: [preconditions and system state]
 - **When**: [action taken]
@@ -81,7 +81,7 @@ Create `specs/SPEC-NNN-deviations.md`:
 ## Acceptance Criteria Coverage
 | Criterion | TC# | Implemented | Tested | Status |
 |-----------|-----|-------------|--------|--------|
-| #1 ... | TC-001 | Yes/No | Yes/No | Pass/Fail/Gap |
+| AC-1 | TC-001 | Yes/No | Yes/No | Pass/Fail/Gap |
 ```
 
 ## Severity Definitions

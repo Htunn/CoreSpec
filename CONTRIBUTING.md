@@ -27,16 +27,24 @@ and lets maintainers weigh in on direction before you invest time.
    ```bash
    shellcheck install.sh uninstall.sh install-copilot.sh uninstall-copilot.sh
    ```
-4. If you touched an agent or skill file, manually run the relevant install
+4. If you touched an agent, skill, template, or the README, run the validator
+   (needs `pip install pyyaml`) and fix any errors:
+   ```bash
+   python3 scripts/validate.py
+   ```
+   It checks front-matter, that every agent has a matching skill, that the spec
+   template sections appear in `software-architect` and `product-manager`, and
+   that the `spec-driver` phases match across the agent, skill, and README.
+5. If you touched an agent or skill file, manually run the relevant install
    script against a scratch directory and confirm the file lands where
    expected:
    ```bash
    ./install.sh --project /tmp/scratch          # agents → /tmp/scratch/.claude/agents/
    ./install-copilot.sh --project /tmp/scratch  # skills → /tmp/scratch/.github/skills/, .claude/skills/
    ```
-5. Update [CHANGELOG.md](CHANGELOG.md) under `[Unreleased]` describing your
+6. Update [CHANGELOG.md](CHANGELOG.md) under `[Unreleased]` describing your
    change (Added / Changed / Removed).
-6. Open a pull request with a clear description of the change and why it's
+7. Open a pull request with a clear description of the change and why it's
    needed.
 
 ## Adding a new role (agent + skill)

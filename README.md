@@ -53,6 +53,7 @@ This sequence matters because the cost of changing a spec is near zero; the cost
 | `devsecops-architect` | DevSecOps Architect | Threat model, auth, compliance, CI/CD security gates |
 | `backend-engineer` | Senior Backend SE | Implements server-side from approved spec |
 | `frontend-engineer` | Senior Frontend SE | Implements UI from approved spec |
+| `mobile-app-engineer` | Senior Mobile App Engineer | iOS, Android, React Native, and Flutter apps: offline-first sync, push, permissions, secure on-device storage, store release builds, implemented from an approved spec |
 | `qa-engineer` | Senior QA Engineer | Test plans, spec validation, deviation reports |
 | `release-engineer` | Senior Release Engineer | Conventional commits, changelog, SemVer, release notes, docs |
 | `data-engineer` | Senior Data Engineer | Data pipelines (batch and streaming), dbt/Spark/Airflow, dimensional modelling, data quality, data contracts, implemented from an approved spec |
@@ -126,7 +127,7 @@ Run from the cloned repo — no project path needed, this installs once for your
 ./install-copilot.sh
 ```
 
-This creates `<name>/SKILL.md` for all 15 roles under each of the global skill directories listed above (`~/.claude` honors `CLAUDE_CONFIG_DIR`).
+This creates `<name>/SKILL.md` for all 16 roles under each of the global skill directories listed above (`~/.claude` honors `CLAUDE_CONFIG_DIR`).
 
 To install into a repository instead, run `./install-copilot.sh --project /path/to/repo`; skills are written to `.github/skills/` and `.claude/skills/` for you to commit.
 
@@ -186,6 +187,7 @@ Diagnose why the retrieval recall is below 60%.
 | DevSecOps Architect | `/devsecops-architect` | Yes |
 | Backend Engineer | `/backend-engineer` | Yes |
 | Frontend Engineer | `/frontend-engineer` | Yes |
+| Mobile App Engineer | `/mobile-app-engineer` | Yes |
 | QA Engineer | `/qa-engineer` | Yes |
 | Data Engineer | `/data-engineer` | Yes |
 | ML Engineer | `/ml-engineer` | Yes |
@@ -222,15 +224,16 @@ Use spec-driver to implement [feature description]
 The `spec-driver` orchestrator will run through these phases automatically:
 
 ```
-Phase 0  Requirements capture           — asks 5 clarifying questions
-Phase 1  Spec file created              — specs/SPEC-NNN-{slug}.md
+Phase 0  Requirements capture           — spec-driver asks you clarifying questions
+Phase 1  Spec file created              — product-manager writes specs/SPEC-NNN-{slug}.md business sections
 Phase 2  Architects work in parallel    — software + platform + devsecops
 Phase 3  Human review gate             — you approve before any code is written
 Phase 4  Test plan (optional)           — qa-engineer creates test cases from criteria
-Phase 5  Implementation                 — backend + frontend + data + ml + platform engineers in parallel
-Phase 6  QA validation                  — qa-engineer produces deviation report
-Phase 7  Spec signed off               — Status: Implemented
-Phase 8  Release preparation            — release-engineer: SemVer, changelog, commit message, release notes
+Phase 5  Implementation                 — backend + frontend + mobile + data + ml + ai + platform engineers in parallel
+Phase 6  Security & code review         — code-reviewer always; pentester when the spec exposes a reachable surface
+Phase 7  QA validation                  — qa-engineer produces deviation report
+Phase 8  Spec signed off               — Status: Implemented
+Phase 9  Release preparation            — release-engineer: SemVer, changelog, commit message, release notes
 ```
 
 ### Use individual agents directly
@@ -257,6 +260,9 @@ Use data-engineer to implement specs/SPEC-006-events-pipeline.md
 # Implement model training, evaluation, and serving from an approved spec
 Use ml-engineer to implement specs/SPEC-007-churn-model.md
 
+# Implement an iOS/Android app from an approved spec
+Use mobile-app-engineer to implement specs/SPEC-008-mobile-checkout.md
+
 # Validate implementation against spec
 Use qa-engineer to validate the implementation against specs/SPEC-003-notifications.md
 
@@ -272,77 +278,87 @@ Use ai-engineer to implement specs/SPEC-005-rag-pipeline.md
 ```
 {project-root}/
   specs/
+    CONSTITUTION.md             # optional: non-negotiable project principles (see templates/constitution.md)
     SPEC-001-{slug}.md          # feature spec (all architect sections)
+    SPEC-001-tasks.md           # task breakdown derived from the approved spec
     SPEC-001-test-plan.md       # test cases mapped to acceptance criteria
+    SPEC-001-review.md          # code-review (and pentest) findings
     SPEC-001-deviations.md      # QA deviation report
   docs/
     adr/
       ADR-001-{slug}.md         # Architecture Decision Records
 ```
 
+The spec itself follows [templates/SPEC-template.md](templates/SPEC-template.md). Every goal, non-goal, story, criterion, and open question has a stable ID (`G-`, `NG-`, `US-`, `AC-`, `OQ-`); tasks, test cases, and deviations cite the `AC-` IDs, so any criterion can be traced to its tasks and tests.
+
 ## How the Workflow Works
 
-The workflow has nine phases. The first three phases exist to make the last five cheaper and more predictable.
+The workflow has ten phases (0–9). The first four exist to make the rest cheaper and more predictable: define the problem, write the spec, and get a human to approve it before any code exists.
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│  DEFINE                                                         │
-│                                                                 │
-│  Phase 0 ── Requirements capture (product-manager)             │
-│  Phase 1 ── Spec stub created   (product-manager)             │
-│                                                                 │
-│  Phase 2 ── Architects in parallel ──────────────────────────┐ │
-│               software-architect  (technical design)         │ │
-│               platform-architect  (infrastructure & SLOs)    │ │
-│               devsecops-architect (threat model & compliance) │ │
-│             └──────────────────────────────────────────────  │ │
-│  Phase 3 ── ⛔ HUMAN REVIEW GATE — spec approved or rework   │ │
-├─────────────────────────────────────────────────────────────────┤
-│  BUILD                                                          │
-│                                                                 │
-│  Phase 4 ── Test plan (qa-engineer, optional)                  │
-│  Phase 5 ── Implementation in parallel ──────────────────────┐ │
-│               backend-engineer   (API, DB, business logic)   │ │
-│               frontend-engineer  (UI, state, API wiring)     │ │
-│               data-engineer      (pipelines, models, quality)│ │
-│               ml-engineer        (training, eval, serving)   │ │
-│               platform-engineer  (infra, containers, CI/CD)  │ │
-│             └──────────────────────────────────────────────  │ │
-│  Phase 6 ── QA validation against spec (qa-engineer)           │
-│  Phase 7 ── Spec signed off — Status: Implemented             │
-├─────────────────────────────────────────────────────────────────┤
-│  SHIP                                                           │
-│                                                                 │
-│  Phase 8 ── Release prep (release-engineer)                    │
-└─────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│  DEFINE                                                          │
+│                                                                  │
+│  Phase 0 ── Requirements capture (spec-driver asks you)          │
+│  Phase 1 ── Spec stub created    (product-manager)               │
+│  Phase 2 ── Architects in parallel                               │
+│               software-architect   (technical design)            │
+│               platform-architect   (infrastructure & SLOs)       │
+│               devsecops-architect  (threat model & compliance)   │
+│  Phase 3 ── ⛔ HUMAN REVIEW GATE — spec approved or rework       │
+├──────────────────────────────────────────────────────────────────┤
+│  BUILD                                                           │
+│                                                                  │
+│  Phase 4 ── Test plan (qa-engineer, optional)                    │
+│  Phase 5 ── Implementation in parallel                           │
+│               backend-engineer      (API, DB, business logic)    │
+│               frontend-engineer     (UI, state, API wiring)      │
+│               mobile-app-engineer   (iOS/Android, offline)       │
+│               data-engineer         (pipelines, models, quality) │
+│               ml-engineer           (training, eval, serving)    │
+│               ai-engineer           (RAG, agents, LLM features)  │
+│               platform-engineer     (infra, containers, CI/CD)   │
+│  Phase 6 ── Security & code review (code-reviewer, pentester)    │
+│  Phase 7 ── QA validation against spec (qa-engineer)             │
+│  Phase 8 ── Spec signed off — Status: Implemented                │
+├──────────────────────────────────────────────────────────────────┤
+│  SHIP                                                            │
+│                                                                  │
+│  Phase 9 ── Release prep (release-engineer)                      │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ### What each role owns
 
 | Phase | Role | Output |
 |-------|------|--------|
-| 0–1 | product-manager | Problem statement, user personas, user stories, acceptance criteria, success metrics |
+| 0 | spec-driver | Asks the discovery questions and confirms them with you |
+| 1 | product-manager | Problem statement, user personas, user stories, acceptance criteria, success metrics |
 | 2 | software-architect | Technical design, API contracts, data model, sequence diagrams |
 | 2 | platform-architect | Infrastructure & Operations section: compute, SLOs, observability, deployment |
 | 2 | devsecops-architect | Security Requirements section: STRIDE, auth, data classification, CI/CD gates |
 | 3 | **You** | Review the completed spec and explicitly approve it |
 | 4 | qa-engineer | Test plan mapping every acceptance criterion to test cases |
-| 5 | backend / frontend / data / platform engineers | Implementation that matches the spec exactly |
-| 6 | qa-engineer | Deviation report — Pass/Fail/Gap per acceptance criterion |
-| 7 | **You** | Sign off: Status → Implemented |
-| 8 | release-engineer | Conventional commit, CHANGELOG entry, SemVer bump, release notes |
+| 5 | backend / frontend / mobile / data / ml / ai / platform engineers | Implementation that matches the spec exactly |
+| 6 | code-reviewer (+ pentester when in scope) | `SPEC-NNN-review.md` — severity-rated security, refactoring, and maintainability findings |
+| 7 | qa-engineer | Deviation report — Pass/Fail/Gap per acceptance criterion |
+| 8 | **You** | Sign off: Status → Implemented |
+| 9 | release-engineer | Conventional commit, CHANGELOG entry, SemVer bump, release notes |
 
 ### Why Phase 3 is non-negotiable
 
 The review gate exists because this is the last moment when changes are cheap. Once engineers start, every contradiction in the spec becomes a context switch, a re-review, or a production incident. The gate is not bureaucracy — it is the point where the cost curve bends.
 
 A spec that passes Phase 3 must have:
-- No open questions
-- All acceptance criteria in testable Given/When/Then form
+- No open questions and no `[NEEDS CLARIFICATION]` markers
+- All acceptance criteria in testable Given/When/Then form, each citing its user story
 - Infrastructure section present
 - Security section present (threat model + auth + data classification)
+- A clean consistency pass: no contradictions between design, infrastructure, and security, and no conflict with the project constitution (or a recorded exception)
 
 If any of these are missing, the spec goes back. It does not proceed.
+
+Before the gate, `spec-driver` reads the whole spec once and reports contradictions and gaps (for example an SLO the design cannot meet, or an error code with no matching criterion). After the gate, Phase 5 starts by deriving a task list from the approved spec: contracts first, then tests, then implementation, with parallel-safe tasks marked `[P]`.
 
 ---
 
@@ -411,11 +427,13 @@ Never fill in the technical sections before the business sections are complete. 
 
 Open questions are debts. Each one is a decision deferred to the worst possible time — mid-implementation. The spec's `## Open Questions` section must be empty before Status changes to `Approved`.
 
+When something is undefined, write `[NEEDS CLARIFICATION: question]` inline instead of guessing a plausible answer. A spec with any marker left is not ready for approval.
+
 Assign each open question an owner and a deadline. If a question cannot be resolved before the gate, scope it out as a Non-Goal and track it as a separate future spec.
 
 ### Step 6: The spec is the source of truth — always
 
-After approval, any change to scope, API contracts, or acceptance criteria goes back through the review gate. Engineers document deviations in `## Implementation Notes`. QA validates against the approved spec, not against what was built. A working implementation that contradicts the spec is a deviation — not a success.
+After approval, any change to scope, API contracts, or acceptance criteria goes back through the review gate: set `Status: Review`, record the edit in the spec's `## Change Log`, and get approval again. A newer spec that replaces this one marks it `Superseded` (with `Superseded by`); a retired feature marks it `Deprecated`. Production incidents and missed success metrics enter the same way — as a spec change, not as an untracked hotfix. Engineers document deviations in `## Implementation Notes`. QA validates against the approved spec, not against what was built. A working implementation that contradicts the spec is a deviation — not a success.
 
 ---
 
@@ -572,6 +590,7 @@ copilot/
     product-manager/SKILL.md
     backend-engineer/SKILL.md
     frontend-engineer/SKILL.md
+    mobile-app-engineer/SKILL.md
     qa-engineer/SKILL.md
     release-engineer/SKILL.md
     data-engineer/SKILL.md
@@ -589,11 +608,13 @@ uninstall-copilot.sh # removes the installed skills (or --project <repo>)
 
 .claude-plugin/      # Claude Code plugin + marketplace manifests (agents/ and copilot/skills/)
 enterprise/          # managed-settings.json and VS Code settings templates for org rollout
+templates/           # SPEC-template.md (canonical spec shape) and constitution.md (optional project principles)
+scripts/validate.py  # CI check: front-matter, agent/skill pairing, spec-template sections, workflow phases
 
 LICENSE              # MIT License
 SECURITY.md          # vulnerability disclosure policy
 CONTRIBUTING.md      # contribution guidelines
-.github/workflows/   # CI: ShellCheck on every push/PR touching *.sh
+.github/workflows/   # CI: ShellCheck on *.sh; validate.py on agents, skills, templates, and README
 ```
 
 To update a role, edit the source file in `agents/` (Claude Code) or `copilot/skills/<name>/SKILL.md` (Copilot) and re-run the relevant install script.

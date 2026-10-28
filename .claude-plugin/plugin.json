@@ -1,7 +1,7 @@
 {
   "name": "corespec",
   "displayName": "CoreSpec",
-  "description": "Spec-driven development roles: product, architecture, platform, security, engineering (backend, frontend, data, ML), QA, and release agents and skills.",
+  "description": "Spec-driven development roles: product, architecture, platform, security, engineering (backend, frontend, mobile, data, ML), QA, and release agents and skills.",
   "author": {
     "name": "Htunn",
     "url": "https://github.com/Htunn"

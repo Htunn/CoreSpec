@@ -88,6 +88,8 @@ Rules:
 - One criterion per observable outcome — no compound "and" criteria
 - Use exact values where applicable ("within 2 seconds", "error message reads X")
 - Every criterion must be verifiable by QA without access to source code
+- Number criteria `AC-1`, `AC-2`, … and cite the story each verifies, e.g. `AC-1 (US-1)`
+- If the request leaves something undefined, write `[NEEDS CLARIFICATION: question]` instead of assuming an answer
 
 ### Step 7: Success Metrics
 
@@ -117,10 +119,11 @@ Create `specs/SPEC-NNN-{kebab-slug}.md`. Fill in all business sections; leave Te
 [Who is affected, what is their pain, what is the cost of not solving it. No solution language.]
 
 ## Goals
-- [ ] [Measurable outcome — not a feature]
+- G-1: [Measurable outcome — not a feature]
 
 ## Non-Goals
-- [Explicit exclusion — why excluded]
+- NG-1: [Explicit exclusion — why excluded]
+- NG-2: [Explicit exclusion — why excluded]
 
 ## User Personas
 ### [Persona Name / Role]
@@ -129,17 +132,19 @@ Create `specs/SPEC-NNN-{kebab-slug}.md`. Fill in all business sections; leave Te
 - **Frequency**: how often they encounter this
 
 ## User Stories
-- As a [persona], I want [action] so that [outcome].
+- US-1: As a [persona], I want [action] so that [outcome].
 
 ## Acceptance Criteria
-- [ ] Given [state] / When [action] / Then [observable outcome]
+- AC-1 (US-1): Given [state] / When [action] / Then [observable outcome]
 
 ## Success Metrics
 | Metric | Baseline | Target | Measurement method |
 |--------|----------|--------|-------------------|
 
 ## Open Questions
-[Must be resolved before Status: Approved. Each question needs an owner and deadline.]
+[Must be resolved before Status: Approved. Each question needs an owner and deadline.
+Mark unresolved ambiguity inline as `[NEEDS CLARIFICATION: question]` — never guess.]
+- OQ-1: [question] — owner: [name], due: [date]
 
 ## Technical Design
 [To be completed by Software Architect]
@@ -152,7 +157,16 @@ Create `specs/SPEC-NNN-{kebab-slug}.md`. Fill in all business sections; leave Te
 
 ## Implementation Notes
 [Filled in by engineers — leave empty]
+
+## Change Log
+[Any edit after Status: Approved is recorded here and needs re-approval.]
+
+| Date | Change | Reason | Approved by |
+|------|--------|--------|-------------|
+| | | | |
 ```
+
+The canonical copy of the full template is `templates/SPEC-template.md` in the CoreSpec repository. Give every goal, non-goal, story, criterion, and open question a stable ID (`G-`, `NG-`, `US-`, `AC-`, `OQ-`) and have each acceptance criterion cite its user story.
 
 ## Review Checklist (before handing to architects)
 - [ ] Problem statement contains no solution language
@@ -162,9 +176,10 @@ Create `specs/SPEC-NNN-{kebab-slug}.md`. Fill in all business sections; leave Te
 - [ ] All acceptance criteria are verifiable without source code access
 - [ ] Success metrics have baseline, target, and measurement method
 - [ ] No open questions remain unassigned
+- [ ] Goals, stories, and criteria have IDs, and every criterion cites its story
+- [ ] No unmarked assumptions — every ambiguity is an `OQ-` item or a `[NEEDS CLARIFICATION]` marker
 
 ## Principles
-- Problems before solutions
 - Measurable or it does not count
 - Non-goals are as important as goals
 - Acceptance criteria are contracts — if QA cannot test it, it is not a criterion

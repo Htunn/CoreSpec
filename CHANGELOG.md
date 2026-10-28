@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-10-28
+
+### Added
+
+- `templates/constitution.md`: optional `specs/CONSTITUTION.md` of
+  non-negotiable project principles, checked by `spec-driver` and the
+  architects, with a recorded-exception path.
+- `templates/SPEC-template.md`: canonical spec shape.
+- `scripts/validate.py` and `.github/workflows/validate.yml`: CI that checks
+  front-matter, agent/skill pairing, the Git Commit Policy section, spec
+  template sections, and that the `spec-driver` phases match across the agent,
+  skill, and README.
+- `mobile-app-engineer` agent and Copilot Agent Skill: implements iOS, Android,
+  React Native, and Flutter apps from an approved spec — offline-first sync,
+  push notifications, permissions, secure on-device storage, accessibility,
+  and store release builds. Complements `frontend-engineer` (web). Wired into
+  the `spec-driver` Implementation phase.
+
+### Changed
+
+- Spec template (`templates/SPEC-template.md`, mirrored in `software-architect`
+  and `product-manager`): stable IDs (`G-`, `NG-`, `US-`, `AC-`, `OQ-`) with
+  each criterion citing its story, `[NEEDS CLARIFICATION: …]` markers instead
+  of guessing, `Superseded` / `Deprecated` statuses, and a `Change Log` for
+  edits after approval. `qa-engineer` test plans and coverage tables cite `AC-`
+  IDs.
+- `spec-driver` adds a consistency pass before the human gate (contradictions
+  between design, infrastructure, and security; unresolved markers), a task
+  breakdown (`SPEC-NNN-tasks.md`, contracts → tests → implementation, `[P]`
+  parallel markers) at the start of Phase 5, an existing-spec update path
+  (Change Log, re-approval, `Superseded`), and an optional `spec/NNN-slug`
+  branch-and-PR convention.
+- **BREAKING**: `spec-driver` workflow is now ten phases (0–9) and identical across the
+  Claude Code agent, the Copilot skill, and the README. New Phase 6
+  (Security & Code Review) runs `code-reviewer` and, when the spec exposes a
+  reachable surface and the user confirms an authorised scope, `pentester`
+  before QA. QA, sign-off, and release prep move to Phases 7–9.
+- `spec-driver` now delegates the business sections of the spec to
+  `product-manager` (Phase 1) and no longer asks `software-architect` to
+  rewrite them.
+
+### Fixed
+
+- `spec-driver` never spawned `ai-engineer`; AI/LLM work now has an
+  Implementation-phase branch.
+- `spec-driver` front-matter description listed only backend, frontend, and
+  platform engineers; it now lists every role in the workflow.
+- Phase counts disagreed across the agent (0–8), the Copilot skill ("eight
+  phases"), and the README ("nine phases").
+
 ## [1.0.0] - 2026-10-18
 
 ### Added
@@ -139,7 +189,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Senior Pentester agent covering OWASP Top 10, threat modelling, CVE triage, and
   structured penetration test reports.
 
-[Unreleased]: https://github.com/Htunn/CoreSpec/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Htunn/CoreSpec/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/Htunn/CoreSpec/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/Htunn/CoreSpec/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/htunn/spec-driven-development/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/htunn/spec-driven-development/releases/tag/v0.1.0
